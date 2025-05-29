@@ -5,7 +5,7 @@ FROM node:18-alpine AS builder
 WORKDIR /app
 
 # 3. Copy package files and install dependencies
-COPY .env .env
+ 
 COPY package*.json ./
 RUN npm install
 
