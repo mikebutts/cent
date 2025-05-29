@@ -1,11 +1,12 @@
-'use client';
+"use client";
+export const dynamic = "force-dynamic";
 
-import { useEffect, useRef, useState } from 'react';
-import { collection, query, where, getDocs } from 'firebase/firestore';
-import { db } from '@/firebaseClient';
-import { useAuth } from '@/context/AuthContext';
-import SubscriptionTable from '@/components/SubscriptionTable';
-import SubscriptionPieChart from '@/components/SubscriptionPieChart';
+import { useEffect, useRef, useState } from "react";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { db } from "@/firebaseClient";
+import { useAuth } from "@/context/AuthContext";
+import SubscriptionTable from "@/components/SubscriptionTable";
+import SubscriptionPieChart from "@/components/SubscriptionPieChart";
 
 export default function ReportsPage() {
   const { currentUser } = useAuth();
@@ -14,18 +15,21 @@ export default function ReportsPage() {
   const [allSubs, setAllSubs] = useState([]);
   const [filteredSubs, setFilteredSubs] = useState([]);
 
-  const [categoryFilter, setCategoryFilter] = useState('All');
-  const [statusFilter, setStatusFilter] = useState('All');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [planFilter, setPlanFilter] = useState('All');
+  const [categoryFilter, setCategoryFilter] = useState("All");
+  const [statusFilter, setStatusFilter] = useState("All");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [planFilter, setPlanFilter] = useState("All");
 
   useEffect(() => {
     const fetchSubscriptions = async () => {
       if (!currentUser?.uid) return;
 
-      const q = query(collection(db, 'subscriptions'), where('userId', '==', currentUser.uid));
+      const q = query(
+        collection(db, "subscriptions"),
+        where("userId", "==", currentUser.uid)
+      );
       const snapshot = await getDocs(q);
-      const results = snapshot.docs.map(doc => ({
+      const results = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
         premium: !!doc.data().premium,
@@ -40,23 +44,23 @@ export default function ReportsPage() {
   useEffect(() => {
     let subs = [...allSubs];
 
-    if (categoryFilter !== 'All') {
-      subs = subs.filter(sub => sub.category === categoryFilter);
+    if (categoryFilter !== "All") {
+      subs = subs.filter((sub) => sub.category === categoryFilter);
     }
 
-    if (statusFilter !== 'All') {
-      subs = subs.filter(sub => sub.status === statusFilter);
+    if (statusFilter !== "All") {
+      subs = subs.filter((sub) => sub.status === statusFilter);
     }
 
-    if (searchTerm.trim() !== '') {
-      subs = subs.filter(sub =>
+    if (searchTerm.trim() !== "") {
+      subs = subs.filter((sub) =>
         sub.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
-    if (planFilter !== 'All') {
-      subs = subs.filter(sub =>
-        planFilter === 'Premium' ? sub.premium : !sub.premium
+    if (planFilter !== "All") {
+      subs = subs.filter((sub) =>
+        planFilter === "Premium" ? sub.premium : !sub.premium
       );
     }
 
@@ -73,9 +77,16 @@ export default function ReportsPage() {
           <select
             className="border p-2 w-full"
             value={categoryFilter}
-            onChange={e => setCategoryFilter(e.target.value)}
+            onChange={(e) => setCategoryFilter(e.target.value)}
           >
-            {['All', 'Streaming', 'Music', 'Web Services', 'Fitness', 'Other'].map(cat => (
+            {[
+              "All",
+              "Streaming",
+              "Music",
+              "Web Services",
+              "Fitness",
+              "Other",
+            ].map((cat) => (
               <option key={cat}>{cat}</option>
             ))}
           </select>
@@ -86,9 +97,9 @@ export default function ReportsPage() {
           <select
             className="border p-2 w-full"
             value={statusFilter}
-            onChange={e => setStatusFilter(e.target.value)}
+            onChange={(e) => setStatusFilter(e.target.value)}
           >
-            {['All', 'Active', 'Paused', 'Cancelled'].map(status => (
+            {["All", "Active", "Paused", "Cancelled"].map((status) => (
               <option key={status}>{status}</option>
             ))}
           </select>
@@ -101,7 +112,7 @@ export default function ReportsPage() {
             type="text"
             placeholder="e.g. Netflix"
             value={searchTerm}
-            onChange={e => setSearchTerm(e.target.value)}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
 
@@ -110,7 +121,7 @@ export default function ReportsPage() {
           <select
             className="border p-2 w-full"
             value={planFilter}
-            onChange={e => setPlanFilter(e.target.value)}
+            onChange={(e) => setPlanFilter(e.target.value)}
           >
             <option value="All">All</option>
             <option value="Premium">Premium</option>
