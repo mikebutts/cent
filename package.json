@@ -11,7 +11,7 @@
   "dependencies": {
     "@tanstack/react-table": "^8.21.3",
     "context": "^3.0.33",
-    "firebase": "^11.7.1",
+    "firebase": "^11.8.1",
     "firebase-admin": "^13.4.0",
     "fuse.js": "^7.1.0",
     "git-filter-repo": "^0.0.30",
