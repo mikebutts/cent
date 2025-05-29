@@ -21,21 +21,24 @@ export default function ReportsPage() {
   const [planFilter, setPlanFilter] = useState("All");
 
   useEffect(() => {
+    if (!currentUser?.uid) return;
+
     const fetchSubscriptions = async () => {
-      if (!currentUser?.uid) return;
-
-      const q = query(
-        collection(db, "subscriptions"),
-        where("userId", "==", currentUser.uid)
-      );
-      const snapshot = await getDocs(q);
-      const results = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-        premium: !!doc.data().premium,
-      }));
-
-      setAllSubs(results);
+      try {
+        const q = query(
+          collection(db, "subscriptions"),
+          where("userId", "==", currentUser.uid)
+        );
+        const snapshot = await getDocs(q);
+        const results = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+          premium: !!doc.data().premium,
+        }));
+        setAllSubs(results);
+      } catch (err) {
+        console.error("❌ Error fetching subscriptions:", err.message);
+      }
     };
 
     fetchSubscriptions();
@@ -66,6 +69,11 @@ export default function ReportsPage() {
 
     setFilteredSubs(subs);
   }, [allSubs, categoryFilter, statusFilter, searchTerm, planFilter]);
+
+  // Optional fallback if user is not ready
+  if (!currentUser) {
+    return <p className="p-6 text-center">Please log in to view reports.</p>;
+  }
 
   return (
     <main className="p-6 max-w-6xl mx-auto">
