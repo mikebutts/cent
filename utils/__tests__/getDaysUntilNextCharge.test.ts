@@ -11,7 +11,7 @@ describe('getDaysUntilNextCharge', () => {
     expect(parseInt(result)).toBeGreaterThanOrEqual(13); // Approx. 30 - 15 days
   });
 
-  it('returns "N/A" for unknown billing frequency', () => {
+  it('given a date, it should calculate date coorrectly, () => {
     const result = getDaysUntilNextCharge('2025-05-29', 'Monthly');
     function getDaysFromToday(targetDate: string | Date): number {
         const today = new Date();

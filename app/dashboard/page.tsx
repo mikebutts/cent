@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useAuth } from "@/context/AuthContext";
 import { Suspense, useEffect, useState } from "react";
@@ -9,31 +9,26 @@ import SubscriptionSummary from "@/components/SubscriptionsSummary";
 import Link from "next/link";
 
 const blankSubscription = {
-  name: '',
-  category: 'Web Services',
-  cost: '',
-  currency: 'USD',
-  billingFrequency: 'Monthly',
-  nextBillingData: '',
-  paymentMethod: 'Credit Card',
-  startDate: '',
-  renewalType: '',
-  notes: '',
-  status: 'Active'
+  name: "",
+  category: "Web Services",
+  cost: "",
+  currency: "USD",
+  billingFrequency: "Monthly",
+  nextBillingData: "",
+  paymentMethod: "Credit Card",
+  startDate: "",
+  renewalType: "",
+  notes: "",
+  status: "Active",
 };
 
 export default function DashboardPage() {
-  const {
-    currentUser,
-    subscriptions,
-    loading,
-    handleDeleteSubscription
-  } = useAuth();
+  const { currentUser, subscriptions, loading, handleDeleteSubscription } =
+    useAuth();
 
   const [isAddEntry, setIsAddEntry] = useState(false);
   const [formData, setFormData] = useState(blankSubscription);
   const [editingId, setEditingId] = useState(null);
-
 
   const isAuthenticated = !!currentUser;
 
@@ -41,19 +36,18 @@ export default function DashboardPage() {
     console.log("🔐 currentUser:", currentUser);
   }, [currentUser]);
 
-  function handleChangeInput(e) {
+  function handleChangeInput(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   }
 
   function handleResetForm() {
     setFormData(blankSubscription);
     setEditingId(null);
-
   }
 
   function handleToggleInput() {
-    setIsAddEntry(prev => !prev);
+    setIsAddEntry((prev) => !prev);
   }
 
   function handleEditSubscription(subscription) {
@@ -83,7 +77,7 @@ export default function DashboardPage() {
       />
       {isAddEntry && (
         <SubscriptionForm
-        currentUser={currentUser} 
+          currentUser={currentUser}
           handleResetForm={handleResetForm}
           closeInput={handleToggleInput}
           formData={formData}
@@ -91,12 +85,12 @@ export default function DashboardPage() {
           editingId={editingId}
         />
       )}
-<div className="hard-line"></div>
-<div className="flex justify-center">
-  <Link href="/reports">
-    <button>Reports</button>
-  </Link>
-</div>
+      <div className="hard-line"></div>
+      <div className="flex justify-center">
+        <Link href="/reports">
+          <button>Reports</button>
+        </Link>
+      </div>
     </>
   );
 }
