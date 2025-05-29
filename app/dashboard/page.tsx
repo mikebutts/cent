@@ -1,4 +1,5 @@
 "use client";
+export const dynamic = "force-dynamic";
 
 import { useAuth } from "@/context/AuthContext";
 import { Suspense, useEffect, useState } from "react";
@@ -33,7 +34,9 @@ export default function DashboardPage() {
   const isAuthenticated = !!currentUser;
 
   useEffect(() => {
-    console.log("🔐 currentUser:", currentUser);
+    if (typeof window !== "undefined") {
+      console.log("🔐 currentUser:", currentUser);
+    }
   }, [currentUser]);
 
   function handleChangeInput(e: React.ChangeEvent<HTMLInputElement>) {
@@ -60,7 +63,7 @@ export default function DashboardPage() {
     return <p>Loading...</p>;
   }
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated && typeof window !== "undefined") {
     return (
       <Suspense fallback={<p>Loading...</p>}>
         <Login />
@@ -85,10 +88,12 @@ export default function DashboardPage() {
           editingId={editingId}
         />
       )}
-      <div className="hard-line"></div>
+      <div className="hard-line my-6"></div>
       <div className="flex justify-center">
         <Link href="/reports">
-          <button>Reports</button>
+          <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+            Reports
+          </button>
         </Link>
       </div>
     </>
